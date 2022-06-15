@@ -35,6 +35,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Git
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " Commenting
 Plug 'tpope/vim-commentary'
@@ -52,6 +53,8 @@ Plug 'kyazdani42/nvim-tree.lua'
 " Jumping
 Plug 'justinmk/vim-sneak'
 
+" Which key
+Plug 'folke/which-key.nvim'
 
 " Initialize plugin system
 call plug#end()
@@ -74,6 +77,17 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions
 let g:coc_global_extensions = ['coc-json', 'coc-tsserver', 'coc-pyright', 'coc-clangd']
 
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -85,7 +99,7 @@ nmap <silent> gr <Plug>(coc-references)
 " Nvim Tree
 """"""""""""""""""""""""""""""""""""""""""
 lua require 'nvim-tree'.setup {}
-nmap <F7> :NvimTreeToggle<CR>
+nnoremap <F7> :NvimTreeToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""
 " Buffer management
@@ -97,3 +111,14 @@ nnoremap <leader>b :ls<cr>:b<space>
 " sneak.vim
 """"""""""""""""""""""""""""""""""""""""""
 let g:sneak#label = 1
+
+""""""""""""""""""""""""""""""""""""""""""
+" which key
+""""""""""""""""""""""""""""""""""""""""""
+lua require 'which-key'.setup {}
+
+""""""""""""""""""""""""""""""""""""""""""
+" Vista
+""""""""""""""""""""""""""""""""""""""""""
+let g:vista_default_executive = 'coc'
+nnoremap <F8> :Vista!!<CR>
